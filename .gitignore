@@ -1,0 +1,89 @@
+# Gradle
+.gradle/
+**/.gradle/
+.kotlin/
+/build/
+/*/build/
+gradle-app.setting
+
+# Keep the Gradle wrapper under version control
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+/out/
+/*/out/
+
+# Eclipse and Spring Tool Suite
+.apt_generated/
+.factorypath
+.classpath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+/bin/
+/*/bin/
+
+# NetBeans
+**/nbproject/private/
+**/nbbuild/
+**/nbdist/
+**/.nb-gradle/
+/dist/
+
+# Visual Studio Code and Fleet
+.vscode/
+.fleet/
+
+# Local Codex/agent state
+.agents/
+.codex/
+
+# Java and JVM-generated files
+*.class
+*.hprof
+*.jfr
+hs_err_pid*
+replay_pid*
+.attach_pid*
+javac.*.args
+worst-advice-agent-*.jar
+worst-advice-bootstrap-*.jar
+
+# Logs, coverage, and temporary files
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+coverage/
+.jacoco/
+*.exec
+.scannerwork/
+.sonarlint/
+
+# Local environment and machine-specific configuration
+.env
+.env.*
+!.env.example
+local.properties
+
+# Operating-system metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+Thumbs.db:encryptable
+Desktop.ini
+$RECYCLE.BIN/
+.fuse_hidden*
+.Trash-*
+.nfs*
+

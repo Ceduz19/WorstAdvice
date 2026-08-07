@@ -1,0 +1,45 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    api project(':api')
+    implementation project(':bootstrap')
+    implementation "org.ow2.asm:asm:${rootProject.ext.asmVersion}"
+    implementation "org.ow2.asm:asm-tree:${rootProject.ext.asmVersion}"
+
+    testImplementation platform('org.junit:junit-bom:5.10.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform {
+        excludeTags 'javaagent'
+    }
+}
+
+def javaagentTest = tasks.register('javaagentTest', Test) {
+    group = 'verification'
+    description = 'Runs core integration tests with the distribution JAR loaded through -javaagent.'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    shouldRunAfter tasks.named('test')
+
+    useJUnitPlatform {
+        includeTags 'javaagent'
+    }
+}
+
+def distributionProject = project(':distribution')
+distributionProject.pluginManager.withPlugin('java') {
+    def agentJar = distributionProject.tasks.named('jar', Jar)
+    javaagentTest.configure {
+        dependsOn agentJar
+        jvmArgs "-javaagent:${agentJar.get().archiveFile.get().asFile.absolutePath}"
+    }
+}
+
+tasks.named('check') {
+    dependsOn javaagentTest
+}

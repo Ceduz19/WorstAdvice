@@ -1,0 +1,50 @@
+plugins {
+    id 'base'
+}
+
+group = 'com.github.ceduz19'
+version = '1.0.0-SNAPSHOT'
+ext.asmVersion = '9.9.1'
+
+allprojects {
+    group = rootProject.group
+    version = rootProject.version
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    plugins.withId('java') {
+        java {
+            sourceCompatibility = JavaVersion.VERSION_1_8
+            targetCompatibility = JavaVersion.VERSION_1_8
+            withSourcesJar()
+            withJavadocJar()
+        }
+
+        tasks.withType(JavaCompile).configureEach {
+            options.encoding = 'UTF-8'
+            options.compilerArgs += ['-Xlint:all', '-Xlint:-options']
+        }
+
+        tasks.withType(Javadoc).configureEach {
+            options.encoding = 'UTF-8'
+        }
+
+        tasks.withType(Test).configureEach {
+            useJUnitPlatform()
+        }
+    }
+}
+
+tasks.named('check') {
+    dependsOn ':core:check'
+}
+
+tasks.register('fatJar') {
+    group = 'build'
+    description = 'Builds the relocatable Java agent fat JAR.'
+    dependsOn ':distribution:jar'
+}

@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    runtimeOnly project(':api')
+    runtimeOnly project(':bootstrap')
+    runtimeOnly project(':core')
+    runtimeOnly project(':agent')
+}
+
+tasks.named('jar', Jar) {
+    archiveBaseName = rootProject.name
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    dependsOn configurations.runtimeClasspath
+    exclude 'module-info.class'
+    exclude 'META-INF/versions/**/module-info.class'
+    exclude 'META-INF/*.SF', 'META-INF/*.RSA', 'META-INF/*.DSA'
+
+    manifest {
+        attributes(
+            'Premain-Class': 'com.github.ceduz19.worstadvice.agent.WorstAdviceAgent',
+            'Agent-Class': 'com.github.ceduz19.worstadvice.agent.WorstAdviceAgent',
+            'Can-Retransform-Classes': 'true',
+            'Can-Redefine-Classes': 'false',
+            'Implementation-Title': 'WorstAdvice',
+            'Implementation-Version': project.version
+        )
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+tasks.named('sourcesJar') {
+    enabled = false
+}
+
+tasks.named('javadocJar') {
+    enabled = false
+}

@@ -1,0 +1,7 @@
+rootProject.name = 'WorstAdvice'
+
+include 'api'
+include 'bootstrap'
+include 'core'
+include 'agent'
+include 'distribution'
